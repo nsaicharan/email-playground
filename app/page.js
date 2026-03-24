@@ -1,66 +1,142 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+/**
+ * Main page component — Email Sandbox
+ *
+ * Orchestrates the editor, preview, navbar, send modal, and toast notifications.
+ */
+'use client';
+
+import { useState, useCallback, useEffect } from 'react';
+import dynamic from 'next/dynamic';
+import EmailPreview from '@/app/components/EmailPreview';
+import Header from '@/app/components/Header';
+import SendEmailModal from '@/app/components/SendEmailModal';
+import Toast from '@/app/components/Toast';
+import { sampleEmailTemplate } from '@/app/lib/sampleTemplate';
+
+// Dynamically import Monaco Editor (client-side only, no SSR)
+const CodeEditor = dynamic(() => import('@/app/components/CodeEditor'), {
+  ssr: false,
+  loading: () => (
+    <div className="flex items-center justify-center h-full text-text-secondary text-sm">
+      Loading editor...
+    </div>
+  ),
+});
 
 export default function Home() {
+  // ── State ──
+  const [html, setHtml] = useState(sampleEmailTemplate);
+  const [viewMode, setViewMode] = useState('desktop');
+  const [theme, setTheme] = useState('dark');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
+  const [toast, setToast] = useState(null);
+
+  // ── Apply theme to <html> element ──
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  // ── Handlers ──
+
+  const handleToggleView = useCallback(() => {
+    setViewMode((prev) => (prev === 'desktop' ? 'mobile' : 'desktop'));
+  }, []);
+
+  const handleToggleTheme = useCallback(() => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  }, []);
+
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(html);
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000);
+    } catch {
+      setToast({ message: 'Failed to copy to clipboard.', type: 'error' });
+    }
+  }, [html]);
+
+  const handleSendClick = useCallback(() => {
+    setIsModalOpen(true);
+  }, []);
+
+  const handleSendEmail = useCallback(
+    async ({ recipients, subject }) => {
+      setIsSending(true);
+
+      try {
+        const res = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ html, recipients, subject }),
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          setToast({
+            message: `Email sent successfully to ${recipients.join(', ')}`,
+            type: 'success',
+          });
+          setIsModalOpen(false);
+        } else {
+          setToast({ message: data.error, type: 'error' });
+        }
+      } catch {
+        setToast({
+          message: 'Network error. Please try again.',
+          type: 'error',
+        });
+      } finally {
+        setIsSending(false);
+      }
+    },
+    [html],
+  );
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.js file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="flex flex-col h-screen overflow-hidden">
+      {/* Header */}
+      <Header
+        onSendClick={handleSendClick}
+        onCopyClick={handleCopy}
+        theme={theme}
+        onToggleTheme={handleToggleTheme}
+        copySuccess={copySuccess}
+      />
+
+      {/* Main content area: editor + preview */}
+      <main className="flex flex-1 overflow-hidden max-md:flex-col">
+        <div className="flex-1 min-w-0 p-4 pr-2 max-md:p-3 max-md:h-1/2 max-md:flex-none">
+          <CodeEditor value={html} onChange={setHtml} theme={theme} />
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="flex-1 min-w-0 p-4 pl-2 max-md:p-3 max-md:h-1/2 max-md:flex-none">
+          <EmailPreview
+            html={html}
+            viewMode={viewMode}
+            onToggleView={handleToggleView}
+          />
         </div>
       </main>
+
+      {/* Send email modal */}
+      <SendEmailModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSend={handleSendEmail}
+        isSending={isSending}
+      />
+
+      {/* Toast notifications */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 }

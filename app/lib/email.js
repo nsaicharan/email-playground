@@ -2,7 +2,7 @@
  * Email utility module
  * Handles SMTP transport creation and email sending via Nodemailer.
  */
-import nodemailer from "nodemailer";
+import nodemailer from 'nodemailer';
 
 /**
  * Creates and returns a reusable Nodemailer transport instance.
@@ -34,10 +34,13 @@ export async function sendEmail({ to, subject, html }) {
   const transporter = createTransport();
 
   // Nodemailer accepts comma-separated string or array for multiple recipients
-  const recipients = Array.isArray(to) ? to.join(", ") : to;
+  const recipients = Array.isArray(to) ? to.join(', ') : to;
 
   const mailOptions = {
-    from: process.env.EMAIL_FROM || process.env.SMTP_USER,
+    from: {
+      name: process.env.EMAIL_FROM_NAME || process.env.SMTP_USER,
+      address: process.env.EMAIL_FROM_ADDRESS || process.env.SMTP_USER,
+    },
     to: recipients,
     subject,
     html,

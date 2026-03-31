@@ -33,20 +33,20 @@ export default function EmailPreview({
 
   return (
     <div className="flex flex-col h-full bg-surface-primary rounded-xl border border-border-primary overflow-hidden">
-      {/* Header */}
+      {/* Top bar */}
       <div className="flex items-center justify-between px-5 py-2.5 border-b border-border-primary bg-surface-secondary">
         <span className="text-[13px] font-semibold text-text-secondary uppercase tracking-wide">
           Preview
         </span>
 
         {/* View Mode Toggle */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-1">
           <button
             onClick={() => viewMode !== 'desktop' && onToggleView()}
-            className={`cursor-pointer transition-all duration-150 ${
+            className={`flex items-center justify-center w-8 h-8 rounded-md cursor-pointer transition-all duration-200 ${
               viewMode === 'desktop'
-                ? 'bg-surface-secondary text-text-primary shadow-sm'
-                : 'text-text-secondary hover:text-text-primary'
+                ? 'bg-accent-bg text-accent-primary border border-accent-primary/40 shadow-sm'
+                : 'text-text-secondary border border-border-primary/50 hover:text-text-primary hover:bg-surface-primary/5'
             }`}
             title="Desktop view"
           >
@@ -55,10 +55,10 @@ export default function EmailPreview({
 
           <button
             onClick={() => viewMode !== 'mobile' && onToggleView()}
-            className={`cursor-pointer transition-all duration-150 ${
+            className={`flex items-center justify-center w-8 h-8 rounded-md cursor-pointer transition-all duration-200 ${
               viewMode === 'mobile'
-                ? 'bg-surface-secondary text-text-primary shadow-sm'
-                : 'text-text-secondary hover:text-text-primary'
+                ? 'bg-accent-bg text-accent-primary border border-accent-primary/40 shadow-sm'
+                : 'text-text-secondary border border-border-primary/50 hover:text-text-primary hover:bg-surface-primary/5'
             }`}
             title="Mobile view"
           >

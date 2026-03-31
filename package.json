@@ -12,6 +12,7 @@
     "@heroicons/react": "^2.2.0",
     "@monaco-editor/react": "^4.7.0",
     "@vercel/analytics": "^2.0.1",
+    "emmet-monaco-es": "^5.7.0",
     "next": "16.2.1",
     "nodemailer": "^8.0.3",
     "react": "19.2.4",

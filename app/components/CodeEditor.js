@@ -7,6 +7,7 @@
 
 import { useCallback } from 'react';
 import Editor from '@monaco-editor/react';
+import { emmetHTML } from 'emmet-monaco-es';
 import { DocumentDuplicateIcon, CheckIcon } from '@heroicons/react/24/outline';
 
 export default function CodeEditor({
@@ -21,6 +22,10 @@ export default function CodeEditor({
     },
     [onChange],
   );
+
+  const handleEditorWillMount = (monaco) => {
+    emmetHTML(monaco);
+  };
 
   return (
     <div className="flex flex-col h-full bg-surface-primary rounded-xl border border-border-primary overflow-hidden">
@@ -58,6 +63,7 @@ export default function CodeEditor({
           height="100%"
           language="html"
           theme="vs-dark"
+          beforeMount={handleEditorWillMount}
           value={value}
           onChange={handleChange}
           options={{

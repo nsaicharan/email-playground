@@ -5,7 +5,7 @@
  */
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import EmailPreview from '@/app/components/EmailPreview';
 import Header from '@/app/components/Header';
@@ -27,16 +27,10 @@ export default function Home() {
   // ── State ──
   const [html, setHtml] = useState(sampleEmailTemplate);
   const [viewMode, setViewMode] = useState('desktop');
-  const [theme, setTheme] = useState('dark');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
   const [toast, setToast] = useState(null);
-
-  // ── Apply theme to <html> element ──
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
 
   // ── Handlers ──
 
@@ -44,9 +38,7 @@ export default function Home() {
     setViewMode((prev) => (prev === 'desktop' ? 'mobile' : 'desktop'));
   }, []);
 
-  const handleToggleTheme = useCallback(() => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
-  }, []);
+
 
   const handleCopy = useCallback(async () => {
     try {
@@ -101,16 +93,17 @@ export default function Home() {
       {/* Header */}
       <Header
         onSendClick={handleSendClick}
-        onCopyClick={handleCopy}
-        theme={theme}
-        onToggleTheme={handleToggleTheme}
-        copySuccess={copySuccess}
       />
 
       {/* Main content area: editor + preview */}
       <main className="flex flex-1 overflow-hidden max-md:flex-col">
         <div className="flex-1 min-w-0 p-4 pr-2 max-md:p-3 max-md:h-1/2 max-md:flex-none">
-          <CodeEditor value={html} onChange={setHtml} theme={theme} />
+          <CodeEditor
+            value={html}
+            onChange={setHtml}
+            onCopyClick={handleCopy}
+            copySuccess={copySuccess}
+          />
         </div>
         <div className="flex-1 min-w-0 p-4 pl-2 max-md:p-3 max-md:h-1/2 max-md:flex-none">
           <EmailPreview

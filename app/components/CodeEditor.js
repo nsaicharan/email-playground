@@ -7,8 +7,14 @@
 
 import { useCallback } from 'react';
 import Editor from '@monaco-editor/react';
+import { DocumentDuplicateIcon, CheckIcon } from '@heroicons/react/24/outline';
 
-export default function CodeEditor({ value, onChange, theme = 'vs-dark' }) {
+export default function CodeEditor({
+  value,
+  onChange,
+  onCopyClick,
+  copySuccess,
+}) {
   const handleChange = useCallback(
     (newValue) => {
       onChange(newValue || '');
@@ -18,14 +24,32 @@ export default function CodeEditor({ value, onChange, theme = 'vs-dark' }) {
 
   return (
     <div className="flex flex-col h-full bg-surface-primary rounded-xl border border-border-primary overflow-hidden">
-      {/* Header bar */}
+      {/* Top bar */}
       <div className="flex items-center justify-between px-5 py-3 border-b border-border-primary bg-surface-secondary">
         <span className="text-[13px] font-semibold text-text-secondary uppercase tracking-wide">
           HTML Editor
         </span>
-        <span className="text-[11px] font-semibold text-accent-primary bg-accent-bg px-2.5 py-0.5 rounded-md tracking-wide">
-          HTML
-        </span>
+        <button
+          onClick={onCopyClick}
+          className={`flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md cursor-pointer transition-all duration-200 ${
+            copySuccess
+              ? 'bg-success-bg text-success border border-success/30'
+              : 'bg-accent-bg text-accent-primary border border-accent-primary/20 hover:border-accent-primary/40 hover:bg-accent-primary/10'
+          }`}
+          title="Copy HTML to clipboard"
+        >
+          {copySuccess ? (
+            <>
+              <CheckIcon className="w-3.5 h-3.5" />
+              <span>Copied</span>
+            </>
+          ) : (
+            <>
+              <DocumentDuplicateIcon className="w-3.5 h-3.5" />
+              <span>Copy</span>
+            </>
+          )}
+        </button>
       </div>
 
       {/* Editor area */}
@@ -33,7 +57,7 @@ export default function CodeEditor({ value, onChange, theme = 'vs-dark' }) {
         <Editor
           height="100%"
           language="html"
-          theme={theme === 'dark' ? 'vs-dark' : 'light'}
+          theme="vs-dark"
           value={value}
           onChange={handleChange}
           options={{

@@ -5,12 +5,13 @@
  */
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import EmailPreview from '@/app/components/EmailPreview';
 import Header from '@/app/components/Header';
 import SendEmailModal from '@/app/components/SendEmailModal';
 import Toast from '@/app/components/Toast';
+import SplitPane from '@/app/components/SplitPane';
 import { sampleEmailTemplate } from '@/app/lib/sampleTemplate';
 
 // Dynamically import Monaco Editor (client-side only, no SSR)
@@ -37,8 +38,6 @@ export default function Home() {
   const handleToggleView = useCallback(() => {
     setViewMode((prev) => (prev === 'desktop' ? 'mobile' : 'desktop'));
   }, []);
-
-
 
   const handleCopy = useCallback(async () => {
     try {
@@ -91,28 +90,26 @@ export default function Home() {
   return (
     <div className="flex flex-col h-screen overflow-hidden">
       {/* Header */}
-      <Header
-        onSendClick={handleSendClick}
-      />
+      <Header onSendClick={handleSendClick} />
 
       {/* Main content area: editor + preview */}
-      <main className="flex flex-1 overflow-hidden max-md:flex-col">
-        <div className="flex-1 min-w-0 p-4 pr-2 max-md:p-3 max-md:h-1/2 max-md:flex-none">
+      <SplitPane 
+        leftPane={
           <CodeEditor
             value={html}
             onChange={setHtml}
             onCopyClick={handleCopy}
             copySuccess={copySuccess}
           />
-        </div>
-        <div className="flex-1 min-w-0 p-4 pl-2 max-md:p-3 max-md:h-1/2 max-md:flex-none">
+        }
+        rightPane={
           <EmailPreview
             html={html}
             viewMode={viewMode}
             onToggleView={handleToggleView}
           />
-        </div>
-      </main>
+        }
+      />
 
       {/* Send email modal */}
       <SendEmailModal

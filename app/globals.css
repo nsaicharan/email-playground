@@ -60,6 +60,13 @@ body {
 }
 
 /* ── Scrollbar ── */
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-primary) transparent;
+}
+
+/* Webkit (Chrome, Edge, Safari) */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--color-border-primary); border-radius: 3px; }

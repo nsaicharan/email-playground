@@ -46,7 +46,7 @@ export default function EmailPreview({
             className={`flex items-center justify-center w-8 h-8 rounded-md cursor-pointer transition-all duration-200 ${
               viewMode === 'desktop'
                 ? 'bg-accent-bg text-accent-primary border border-accent-primary/40 shadow-sm'
-                : 'text-text-secondary border border-border-primary/50 hover:text-text-primary hover:bg-surface-primary/5'
+                : 'text-text-secondary border border-transparent hover:text-text-primary hover:bg-surface-primary/5'
             }`}
             title="Desktop view"
           >
@@ -58,7 +58,7 @@ export default function EmailPreview({
             className={`flex items-center justify-center w-8 h-8 rounded-md cursor-pointer transition-all duration-200 ${
               viewMode === 'mobile'
                 ? 'bg-accent-bg text-accent-primary border border-accent-primary/40 shadow-sm'
-                : 'text-text-secondary border border-border-primary/50 hover:text-text-primary hover:bg-surface-primary/5'
+                : 'text-text-secondary border border-transparent hover:text-text-primary hover:bg-surface-primary/5'
             }`}
             title="Mobile view"
           >
@@ -68,18 +68,20 @@ export default function EmailPreview({
       </div>
 
       {/* Preview area */}
-      <div className="flex-1 overflow-auto flex justify-center p-5 bg-preview-bg">
+      <div
+        className={`flex-1 overflow-auto flex justify-center items-center bg-preview-bg`}
+      >
         <div
-          className={`h-full transition-[width] duration-300 ease-in-out ${
+          className={`transition-[width_height] duration-300 ease-in-out ${
             viewMode === 'mobile'
-              ? 'w-[390px] mx-auto rounded-[20px] overflow-hidden shadow-[0_0_0_8px_var(--color-border-primary),0_8px_32px_rgba(0,0,0,0.15)]'
-              : 'w-full'
+              ? 'h-[calc(100%-32px)] w-[390px] mx-auto rounded-xl overflow-hidden shadow-[0_0_0_8px_var(--color-border-primary),0_8px_32px_rgba(0,0,0,0.15)]'
+              : 'h-full w-full'
           }`}
         >
           <iframe
             ref={iframeRef}
             title="Email Preview"
-            className="w-full h-full border-none bg-white rounded"
+            className="w-full h-full border-none bg-white"
             sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox"
           />
         </div>

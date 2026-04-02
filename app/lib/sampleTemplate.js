@@ -52,7 +52,7 @@ export const sampleEmailTemplate = `<!DOCTYPE html>
   </style>
 </head>
 
-<body style="background-color: #F7F5F4;">
+<body vlink="#1E1C1D" style="background-color: #F7F5F4;">
   <table role="presentation" align="center" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
     <!-- Logo -->
     <tr>
@@ -65,7 +65,7 @@ export const sampleEmailTemplate = `<!DOCTYPE html>
 
     <!-- Begin Main Content -->
     <tr>
-      <td >
+      <td>
         <table role="presentation" align="center" border="0" cellpadding="0" cellspacing="0" class="m-100p" style="width: 600px; background-color: #FFFFFF;">
           <tr>
             <td align="center">
@@ -80,13 +80,13 @@ export const sampleEmailTemplate = `<!DOCTYPE html>
               <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
                 <tr>
                   <td>
-                    <h1 style="margin: 0; font-family: system-ui, arial, sans-serif; font-weight: bold; font-size: 22px; line-height: 28px; letter-spacing: 0.25px; text-transform: uppercase;">This is a sample HTML email template rendered in real&nbsp;time.</h1>
+                    <h1 style="margin: 0; font-family: system-ui, arial, sans-serif; font-weight: bold; font-size: 22px; line-height: 28px; letter-spacing: 0.25px; text-transform: uppercase; color: #1E1C1D;">This is a sample HTML email template rendered in real&nbsp;time.</h1>
                   </td>
                 </tr>
 
                 <tr>
                   <td>
-                    <p style="margin: 20px 0 32px; font-family: system-ui, arial, sans-serif; font-size: 18px; line-height: 28px;">You can edit this code on the left, and see the live preview on the right. When you are ready, you can send a test email to yourself or your&nbsp;team.</p>
+                    <p style="margin: 20px 0 32px; font-family: system-ui, arial, sans-serif; font-size: 18px; line-height: 28px; color: #1E1C1D;">You can edit this code on the left, and see the live preview on the right. When you are ready, you can send a test email to yourself or your&nbsp;team.</p>
                   </td>
                 </tr>
 
@@ -95,8 +95,8 @@ export const sampleEmailTemplate = `<!DOCTYPE html>
                   <td>
                     <table role="presentation" border="0" cellspacing="0" cellpadding="0">
                       <tr>
-                        <td style="background-color: #000000; border-radius: 4px;">
-                          <a href="https://example.com" style="padding: 18px 18px; font-size: 14px; line-height: 14px; letter-spacing: 1.5px; font-family: system-ui, arial, sans-serif; color: #FFFFFF; text-align: center; text-decoration: none; display: block; background-color: #000000; border: 1px solid white; border-radius: 4px;">
+                        <td style="background-color: #1E1C1D; border-radius: 4px;">
+                          <a href="https://example.com" style="padding: 18px 18px; font-size: 14px; line-height: 14px; letter-spacing: 1.5px; font-family: system-ui, arial, sans-serif; color: #FFFFFF; text-align: center; text-decoration: none; display: block; background-color: #1E1C1D; border: 1px solid white; border-radius: 4px;">
                             CALL TO ACTION
                           </a>
                         </td>

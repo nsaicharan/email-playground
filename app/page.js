@@ -1,8 +1,3 @@
-/**
- * Main page component — Email Sandbox
- *
- * Orchestrates the editor, preview, navbar, send modal, and toast notifications.
- */
 'use client';
 
 import { useState, useCallback, useRef } from 'react';
@@ -93,7 +88,7 @@ export default function Home() {
       <Header onSendClick={handleSendClick} />
 
       {/* Main content area: editor + preview */}
-      <SplitPane 
+      <SplitPane
         leftPane={
           <CodeEditor
             value={html}

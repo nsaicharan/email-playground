@@ -5,7 +5,7 @@
  */
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { isValidEmail } from '@/app/lib/validators';
 
@@ -14,6 +14,31 @@ export default function SendEmailModal({ isOpen, onClose, onSend, isSending }) {
   const [recipients, setRecipients] = useState([]);
   const [subject, setSubject] = useState('Test Email');
   const [error, setError] = useState('');
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Load recipients from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('emailRecipients');
+      if (saved) {
+        setRecipients(JSON.parse(saved));
+      }
+    } catch (e) {
+      console.error('Failed to parse recipients from local storage', e);
+    }
+    setIsLoaded(true);
+  }, []);
+
+  // Save recipients to localStorage whenever it changes
+  useEffect(() => {
+    if (isLoaded) {
+      try {
+        localStorage.setItem('emailRecipients', JSON.stringify(recipients));
+      } catch (e) {
+        console.error('Failed to save recipients to local storage', e);
+      }
+    }
+  }, [recipients, isLoaded]);
 
   /** Add a recipient email to the list */
   const addRecipient = useCallback(() => {
@@ -63,7 +88,6 @@ export default function SendEmailModal({ isOpen, onClose, onSend, isSending }) {
   /** Reset state and close */
   const handleClose = useCallback(() => {
     setEmailInput('');
-    setRecipients([]);
     setSubject('Test Email');
     setError('');
     onClose();
@@ -135,7 +159,6 @@ export default function SendEmailModal({ isOpen, onClose, onSend, isSending }) {
                 className="px-4.5 py-2.5 bg-surface-secondary border border-border-primary rounded-lg text-text-primary text-[13px] font-semibold cursor-pointer transition-all duration-150 whitespace-nowrap hover:bg-accent-bg hover:border-accent-primary hover:text-accent-primary disabled:opacity-40 disabled:cursor-not-allowed"
                 onClick={addRecipient}
                 disabled={isSending || !emailInput.trim()}
-                type="button"
               >
                 Add
               </button>
@@ -169,7 +192,7 @@ export default function SendEmailModal({ isOpen, onClose, onSend, isSending }) {
         {/* Footer */}
         <div className="flex justify-end gap-2.5 px-6 py-4 border-t border-border-primary">
           <button
-            className="px-5 py-2.5 bg-transparent border border-border-primary rounded-lg text-text-secondary text-sm font-medium cursor-pointer transition-all duration-150 hover:bg-surface-secondary disabled:opacity-40"
+            className="px-6 py-2.5 bg-surface-secondary border border-border-primary rounded-lg text-text-primary text-sm font-semibold cursor-pointer transition-all duration-150 hover:bg-accent-bg hover:border-accent-primary hover:text-accent-primary disabled:opacity-40 disabled:cursor-not-allowed"
             onClick={handleClose}
             disabled={isSending}
           >

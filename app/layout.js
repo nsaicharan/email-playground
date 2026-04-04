@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Geist, Oregano } from 'next/font/google';
 import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
 
@@ -7,9 +7,10 @@ const geistSans = Geist({
   subsets: ['latin'],
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const oregano = Oregano({
+  variable: '--font-oregano',
   subsets: ['latin'],
+  weight: ['400'],
 });
 
 export const metadata = {
@@ -23,7 +24,7 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       data-theme="dark"
-      className={`${geistSans.variable} ${geistMono.variable}`}
+      className={`${geistSans.variable} ${oregano.variable}`}
     >
       <body>
         {children}

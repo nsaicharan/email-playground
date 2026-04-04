@@ -21,6 +21,8 @@
 
   --color-preview-bg: #111;
 
+  --font-oregano: var(--font-oregano);
+
   /* Animations */
   --animate-fade-in: fade-in 0.15s ease;
   --animate-slide-up: slide-up 0.2s ease;

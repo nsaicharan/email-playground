@@ -1,16 +1,17 @@
 'use client';
 
-import {
-  PaperAirplaneIcon,
-} from '@heroicons/react/24/outline';
+import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
 
 export default function Header({ onSendClick }) {
   return (
-    <header className="flex items-center justify-between px-6 py-3 bg-surface-secondary border-b border-border-primary gap-4 shrink-0 max-md:flex-wrap max-md:gap-3">
+    <header className="flex items-center justify-between px-6 py-1.75 bg-surface-secondary border-b border-border-primary gap-4 shrink-0 max-md:flex-wrap max-md:gap-3">
       {/* Logo */}
       <div className="flex items-center gap-3">
-        <h1 className="text-lg font-bold text-text-primary m-0 tracking-tight">
-          Email Playground
+        <h1 className="text-[1.375rem] sm:text-[2rem] font-[150] text-text-primary m-0 tracking-tight">
+          Email
+          <span className="font-oregano font-normal tracking-wide">
+            Playground
+          </span>
         </h1>
       </div>
 

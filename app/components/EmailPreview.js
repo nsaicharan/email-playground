@@ -32,7 +32,7 @@ export default function EmailPreview({
       // Force all links to open in a new tab
       const base = doc.createElement('base');
       base.target = '_blank';
-      doc.head.prepend(base);
+      doc.head?.prepend(base);
     }
   }, [html]);
 

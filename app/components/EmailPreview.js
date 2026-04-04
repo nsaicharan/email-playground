@@ -28,6 +28,11 @@ export default function EmailPreview({
       doc.open();
       doc.write(html || '');
       doc.close();
+
+      // Force all links to open in a new tab
+      const base = doc.createElement('base');
+      base.target = '_blank';
+      doc.head.prepend(base);
     }
   }, [html]);
 

@@ -14,9 +14,9 @@ const oregano = Oregano({
 });
 
 export const metadata = {
-  title: 'Email Playground — Build, Preview & Test HTML Emails',
+  title: 'Email Playground — Build, Share & Test HTML Emails',
   description:
-    'Create HTML email templates with real-time preview and quickly send test emails to yourself or your team.',
+    'Quickly create HTML email demos, share them with your team, and send test emails to review and fix issues before sending to customers.',
 };
 
 export default function RootLayout({ children }) {

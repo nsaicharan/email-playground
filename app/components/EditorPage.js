@@ -87,6 +87,23 @@ export default function EditorPage({ initialHtml, snippetId }) {
         body: JSON.stringify({ html }),
       });
 
+      if (!res.ok) {
+        let errorMessage = 'Failed to share.';
+        try {
+          const data = await res.json();
+          errorMessage = data.error || errorMessage;
+        } catch {
+          const text = await res.text();
+          errorMessage = text || errorMessage;
+        }
+        setToast({
+          message: errorMessage,
+          type: 'error',
+        });
+        setShareState('idle');
+        return;
+      }
+
       const data = await res.json();
 
       if (data.success) {
@@ -95,19 +112,27 @@ export default function EditorPage({ initialHtml, snippetId }) {
         // Update URL without page reload
         window.history.pushState({}, '', `/${data.id}`);
 
-        // Copy to clipboard
-        await navigator.clipboard.writeText(newUrl);
-
         setCurrentSnippetId(data.id);
         setShareUrl(newUrl);
-        setShareState('copied');
         setHasChangedSinceShare(false);
 
-        // Transition to disabled after 2 seconds
-        if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
-        copyTimerRef.current = setTimeout(() => {
+        // Copy to clipboard
+        try {
+          await navigator.clipboard.writeText(newUrl);
+          setShareState('copied');
+
+          // Transition to disabled after 2 seconds
+          if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
+          copyTimerRef.current = setTimeout(() => {
+            setShareState('disabled');
+          }, 2000);
+        } catch {
+          setToast({
+            message: 'Shared successfully, but failed to copy to clipboard.',
+            type: 'error',
+          });
           setShareState('disabled');
-        }, 2000);
+        }
       } else {
         setToast({
           message: data.error || 'Failed to share.',
@@ -148,6 +173,19 @@ export default function EditorPage({ initialHtml, snippetId }) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ html, recipients, subject }),
         });
+
+        if (!res.ok) {
+          let errorMessage = 'Failed to send email.';
+          try {
+            const data = await res.json();
+            errorMessage = data.error || errorMessage;
+          } catch {
+            const text = await res.text();
+            errorMessage = text || errorMessage;
+          }
+          setToast({ message: errorMessage, type: 'error' });
+          return;
+        }
 
         const data = await res.json();
 

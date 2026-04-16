@@ -95,9 +95,6 @@ export default function EditorPage({ initialHtml, snippetId }) {
         // Update URL without page reload
         window.history.pushState({}, '', `/${data.id}`);
 
-        // Copy to clipboard
-        await navigator.clipboard.writeText(newUrl);
-
         setCurrentSnippetId(data.id);
         setShareUrl(newUrl);
         setShareState('copied');
@@ -108,6 +105,17 @@ export default function EditorPage({ initialHtml, snippetId }) {
         copyTimerRef.current = setTimeout(() => {
           setShareState('disabled');
         }, 2000);
+
+        // Copy to clipboard safely
+        try {
+          await navigator.clipboard.writeText(newUrl);
+        } catch {
+          setToast({
+            message:
+              "Link created, but it wasn't automatically copied to your clipboard because access was denied.",
+            type: 'error',
+          });
+        }
       } else {
         setToast({
           message: data.error || 'Failed to share.',
@@ -128,7 +136,7 @@ export default function EditorPage({ initialHtml, snippetId }) {
     try {
       await navigator.clipboard.writeText(shareUrl);
       setShareState('copied');
-      
+
       if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
       copyTimerRef.current = setTimeout(() => {
         setShareState('disabled');

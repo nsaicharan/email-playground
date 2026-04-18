@@ -90,7 +90,7 @@ export default function Header({
 
         {/* Send email */}
         <button
-          className="px-5 py-2 bg-accent-primary border border-transparent rounded-md text-surface-primary text-[13px] font-semibold cursor-pointer transition-all duration-150 whitespace-nowrap hover:bg-accent-primary/85"
+          className="px-5 py-2 bg-accent-primary border border-transparent rounded-md text-surface-primary text-[13px] font-semibold cursor-pointer transition-all duration-150 whitespace-nowrap hover:bg-accent-primary/88"
           onClick={onSendClick}
         >
           Send Test Email

@@ -38,9 +38,9 @@ export default function Toast({
         }`}
       >
         {isSuccess ? (
-          <CheckIcon className="w-3.5 h-3.5" />
+          <CheckIcon className="w-3.75 h-3.75" />
         ) : (
-          <XMarkIcon className="w-3.5 h-3.5" />
+          <XMarkIcon className="w-3.75 h-3.75" />
         )}
       </span>
 

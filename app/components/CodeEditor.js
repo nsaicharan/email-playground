@@ -9,6 +9,7 @@ import { useCallback } from 'react';
 import Editor from '@monaco-editor/react';
 import { emmetHTML } from 'emmet-monaco-es';
 import { DocumentDuplicateIcon, CheckIcon } from '@heroicons/react/24/outline';
+import { cn } from 'tailwind-cn';
 
 export default function CodeEditor({
   value,
@@ -36,11 +37,11 @@ export default function CodeEditor({
         </span>
         <button
           onClick={onCopyClick}
-          className={`flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md cursor-pointer transition-all duration-200 ${
-            copySuccess
-              ? 'bg-success-bg text-success border border-success/30'
-              : 'bg-accent-bg text-accent-primary border border-accent-primary/20 hover:border-accent-primary/40 hover:bg-accent-primary/10'
-          }`}
+          className={cn(
+            'flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-md cursor-pointer transition-all duration-200 text-accent-primary bg-transparent border border-accent-primary/40 hover:bg-accent-primary/10',
+            copySuccess &&
+              'bg-success-bg text-success border border-success/30 hover:bg-success-bg',
+          )}
           title="Copy HTML to clipboard"
         >
           {copySuccess ? (

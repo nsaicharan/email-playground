@@ -96,7 +96,7 @@ export default function SendEmailModal({ isOpen, onClose, onSend, isSending }) {
   if (!isOpen) return null;
 
   const inputClass =
-    'flex-1 px-3.5 py-2.5 bg-surface-secondary border border-border-primary rounded-lg text-text-primary text-sm outline-none transition-colors duration-150 focus:border-accent-primary placeholder:text-text-secondary';
+    'flex-1 px-3.5 py-2.5 bg-surface-secondary border border-border-primary rounded-md text-text-primary text-sm outline-none transition-colors duration-150 focus:border-accent-primary placeholder:text-text-secondary';
 
   return (
     <div
@@ -156,7 +156,7 @@ export default function SendEmailModal({ isOpen, onClose, onSend, isSending }) {
                 disabled={isSending}
               />
               <button
-                className="px-4.5 py-2.5 bg-surface-secondary border border-border-primary rounded-lg text-text-primary text-[13px] font-semibold cursor-pointer transition-all duration-150 whitespace-nowrap hover:bg-accent-bg hover:border-accent-primary hover:text-accent-primary disabled:opacity-40 disabled:cursor-not-allowed"
+                className="px-4.5 py-2.5 bg-transparent border border-accent-primary/40 rounded-md text-accent-primary text-[13px] font-semibold cursor-pointer transition-all duration-150 whitespace-nowrap hover:bg-accent-primary/10 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={addRecipient}
                 disabled={isSending || !emailInput.trim()}
               >
@@ -172,7 +172,7 @@ export default function SendEmailModal({ isOpen, onClose, onSend, isSending }) {
               {recipients.map((email) => (
                 <span
                   key={email}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-accent-bg border border-accent-primary/30 rounded-full text-[13px] text-accent-primary font-medium"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-accent-primary/10 border border-accent-primary/40 rounded-full text-[13px] text-accent-primary font-medium"
                 >
                   {email}
                   <button
@@ -181,7 +181,7 @@ export default function SendEmailModal({ isOpen, onClose, onSend, isSending }) {
                     disabled={isSending}
                     aria-label={`Remove ${email}`}
                   >
-                    <XMarkIcon className="w-3.5 h-3.5" />
+                    <XMarkIcon className="w-3.75 h-3.75" />
                   </button>
                 </span>
               ))}
@@ -192,14 +192,14 @@ export default function SendEmailModal({ isOpen, onClose, onSend, isSending }) {
         {/* Footer */}
         <div className="flex justify-end gap-2.5 px-6 py-4 border-t border-border-primary">
           <button
-            className="px-6 py-2.5 bg-surface-secondary border border-border-primary rounded-lg text-text-primary text-sm font-semibold cursor-pointer transition-all duration-150 hover:bg-accent-bg hover:border-accent-primary hover:text-accent-primary disabled:opacity-40 disabled:cursor-not-allowed"
+            className="px-6 py-2.5 bg-transparent border border-accent-primary/40 rounded-md text-accent-primary text-sm font-semibold cursor-pointer transition-all duration-150 hover:bg-accent-primary/10 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleClose}
             disabled={isSending}
           >
             Cancel
           </button>
           <button
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-accent-primary border-none rounded-lg text-surface-primary text-sm font-semibold cursor-pointer transition-all duration-150 hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-accent-primary border-none rounded-md text-surface-primary text-sm font-semibold cursor-pointer transition-all duration-150 hover:bg-accent-primary/88 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleSend}
             disabled={isSending || recipients.length === 0}
           >

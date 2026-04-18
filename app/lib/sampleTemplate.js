@@ -53,7 +53,7 @@ export const sampleEmailTemplate = `<!DOCTYPE html>
 </head>
 
 <body vlink="#1E1C1D" style="background-color: #F7F5F4;">
-  <table role="presentation" align="center" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+  <table role="presentation" align="center" border="0" cellpadding="0" cellspacing="0" style="width: 100%; background-color: #F7F5F4;">
     <!-- Logo -->
     <tr>
       <td align="center" style="padding: 40px 0 30px;">

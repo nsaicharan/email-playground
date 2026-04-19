@@ -19,7 +19,7 @@ const CodeEditor = dynamic(() => import('@/app/components/CodeEditor'), {
   ),
 });
 
-export default function EditorPage({ initialHtml, snippetId }) {
+export default function EditorPage({ initialHtml, templateId }) {
   // ── State ──
   const [html, setHtml] = useState(initialHtml || sampleEmailTemplate);
   const [viewMode, setViewMode] = useState('desktop');
@@ -29,12 +29,12 @@ export default function EditorPage({ initialHtml, snippetId }) {
   const [toast, setToast] = useState(null);
 
   // Share state: 'idle' | 'loading' | 'copied' | 'disabled'
-  const [shareState, setShareState] = useState(snippetId ? 'disabled' : 'idle');
+  const [shareState, setShareState] = useState(templateId ? 'disabled' : 'idle');
   const [shareUrl, setShareUrl] = useState('');
-  const [currentSnippetId, setCurrentSnippetId] = useState(snippetId || null);
+  const [currentTemplateId, setCurrentTemplateId] = useState(templateId || null);
 
   // Track whether HTML has changed since last share
-  const [hasChangedSinceShare, setHasChangedSinceShare] = useState(!snippetId);
+  const [hasChangedSinceShare, setHasChangedSinceShare] = useState(!templateId);
 
   // Timer ref for copy feedback
   const copyTimerRef = useRef(null);
@@ -95,7 +95,7 @@ export default function EditorPage({ initialHtml, snippetId }) {
         // Update URL without page reload
         window.history.pushState({}, '', `/${data.id}`);
 
-        setCurrentSnippetId(data.id);
+        setCurrentTemplateId(data.id);
         setShareUrl(newUrl);
         setShareState('copied');
         setHasChangedSinceShare(false);

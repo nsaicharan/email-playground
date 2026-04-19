@@ -10,7 +10,7 @@
  *   - 500: { success: false, error } for server errors
  */
 import { customAlphabet } from 'nanoid';
-import { saveSnippet } from '@/app/lib/db';
+import { saveTemplate } from '@/app/lib/db';
 
 const generateId = customAlphabet(
   '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
@@ -19,14 +19,14 @@ const generateId = customAlphabet(
 
 const MAX_HTML_LENGTH = 250000; // 250,000 characters limit
 
-export async function POST(request) {
+export async function POST(req) {
   try {
-    const body = await request.json();
+    const body = await req.json();
     const html = body.html;
 
-    if (typeof html !== 'string') {
+    if (!html || typeof html !== 'string') {
       return Response.json(
-        { success: false, error: 'Missing or invalid "html" field.' },
+        { success: false, error: 'Invalid HTML payload.' },
         { status: 400 },
       );
     }
@@ -46,7 +46,7 @@ export async function POST(request) {
     }
 
     const id = generateId();
-    await saveSnippet(id, html);
+    await saveTemplate(id, html);
 
     return Response.json({ success: true, id });
   } catch (error) {

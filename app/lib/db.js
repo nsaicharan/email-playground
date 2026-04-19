@@ -16,13 +16,13 @@ if (process.env.DATABASE_URL) {
 }
 
 /**
- * Creates the snippets table.
+ * Creates the shared_templates table.
  * Invoked lazily only on the first insertion if the table is missing.
  */
-async function createSnippetsTable() {
+async function createSharedTemplatesTable() {
   if (!sql) throw new Error('Database is not configured (missing DATABASE_URL)');
   await sql`
-    CREATE TABLE IF NOT EXISTS snippets (
+    CREATE TABLE IF NOT EXISTS shared_templates (
       id TEXT PRIMARY KEY,
       html TEXT NOT NULL,
       created_at TIMESTAMPTZ DEFAULT NOW()
@@ -31,22 +31,22 @@ async function createSnippetsTable() {
 }
 
 /**
- * Save a snippet to the database.
+ * Save a template to the database.
  * Auto-creates the table if it doesn't exist.
  *
- * @param {string} id - The nanoid for the snippet
+ * @param {string} id - The nanoid for the template
  * @param {string} html - The HTML content
  */
-export async function saveSnippet(id, html) {
+export async function saveTemplate(id, html) {
   if (!sql) throw new Error('Database is not configured (missing DATABASE_URL)');
   
   try {
-    await sql`INSERT INTO snippets (id, html) VALUES (${id}, ${html})`;
+    await sql`INSERT INTO shared_templates (id, html) VALUES (${id}, ${html})`;
   } catch (error) {
     // If the table doesn't exist, create it and retry the insert
     if (error.code === '42P01') {
-      await createSnippetsTable();
-      await sql`INSERT INTO snippets (id, html) VALUES (${id}, ${html})`;
+      await createSharedTemplatesTable();
+      await sql`INSERT INTO shared_templates (id, html) VALUES (${id}, ${html})`;
     } else {
       throw error;
     }
@@ -54,19 +54,19 @@ export async function saveSnippet(id, html) {
 }
 
 /**
- * Retrieve a snippet by ID.
+ * Retrieve a template by ID.
  *
- * @param {string} id - The snippet ID
- * @returns {object|null} The snippet row or null if not found
+ * @param {string} id - The template ID
+ * @returns {object|null} The template row or null if not found
  */
-export async function getSnippet(id) {
+export async function getTemplate(id) {
   if (!sql) throw new Error('Database is not configured (missing DATABASE_URL)');
 
   try {
-    const rows = await sql`SELECT id, html, created_at FROM snippets WHERE id = ${id} LIMIT 1`;
+    const rows = await sql`SELECT id, html, created_at FROM shared_templates WHERE id = ${id} LIMIT 1`;
     return rows.length > 0 ? rows[0] : null;
   } catch (error) {
-    // If the table doesn't exist (Postgres error 42P01), then no snippets exist yet
+    // If the table doesn't exist (Postgres error 42P01), then no shared_templates exist yet
     if (error.code === '42P01') {
       return null;
     }

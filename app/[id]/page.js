@@ -1,15 +1,15 @@
 import { notFound } from 'next/navigation';
-import { getSnippet } from '@/app/lib/db';
+import { getTemplate } from '@/app/lib/db';
 import EditorPage from '@/app/components/EditorPage';
 
-export default async function SharedSnippetPage({ params }) {
+export default async function SharedTemplatePage({ params }) {
   const { id } = await params;
 
-  const snippet = await getSnippet(id);
+  const template = await getTemplate(id);
 
-  if (!snippet) {
+  if (!template) {
     notFound();
   }
 
-  return <EditorPage initialHtml={snippet.html} snippetId={id} />;
+  return <EditorPage initialHtml={template.html} templateId={id} />;
 }

@@ -53,7 +53,7 @@ export async function POST(request) {
     console.error('Share failed:', error);
 
     return Response.json(
-      { success: false, error: 'Failed to save snippet. Please try again.' },
+      { success: false, error: 'Failed to create shareable link.' },
       { status: 500 },
     );
   }

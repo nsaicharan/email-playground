@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Email Playground
 
-## Getting Started
+![Email Playground](./screenshot.png)
 
-First, run the development server:
+A fast, minimal tool for building and testing HTML email templates. Write HTML on the left, see the rendered email on the right, and send a test email to your inbox — all from one screen.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Monaco-powered editor with Emmet support
+- Instant live preview with mobile/desktop toggle
+- Send test emails to any address
+- Save and share templates with a unique URL
+- Resizable split-pane layout
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Clone the repo and install dependencies:
 
-## Learn More
+   ```bash
+   git clone https://github.com/nsaicharan/email-playground.git
+   cd email-playground
+   npm install
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. Copy `.env.example` to `.env.local` and fill in your SMTP and database credentials:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```bash
+   cp .env.example .env.local
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. Start the dev server:
 
-## Deploy on Vercel
+   ```bash
+   npm run dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Open [localhost:3000](http://localhost:3000) and start building.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Built with
+
+Next.js · Tailwind CSS · Monaco Editor · Nodemailer · PostgreSQL (Supabase)

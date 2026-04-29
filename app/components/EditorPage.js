@@ -161,7 +161,7 @@ export default function EditorPage({ initialHtml, templateId }) {
 
         if (data.success) {
           setToast({
-            message: `Email sent successfully to ${recipients.join(', ')}`,
+            message: `Test send successfully sent.`,
             type: 'success',
           });
           setIsModalOpen(false);

@@ -68,7 +68,7 @@ export default function Header({
   shareUrl = '',
 }) {
   return (
-    <header className="flex items-center justify-between px-6 py-1.75 bg-surface-secondary border-b border-border-primary gap-4 shrink-0 max-md:flex-wrap max-md:gap-3">
+    <header className="flex items-center justify-between px-4 py-2 bg-surface-secondary border-b border-border-primary gap-4 shrink-0 max-md:flex-wrap max-md:gap-3">
       {/* Logo */}
       <div className="flex items-center gap-4">
         <h1 className="text-[1.375rem] sm:text-[2rem] font-[150] text-text-primary m-0 tracking-tight">

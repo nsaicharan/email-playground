@@ -38,4 +38,4 @@ Open [localhost:3000](http://localhost:3000) and start building.
 
 ## Built with
 
-Next.js · Tailwind CSS · Monaco Editor · Nodemailer · PostgreSQL (Supabase)
+Next.js · Tailwind CSS · Monaco Editor · Nodemailer · PostgreSQL (Neon)

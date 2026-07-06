@@ -5,7 +5,7 @@
  */
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { isValidEmail } from '@/app/lib/validators';
 
@@ -15,6 +15,7 @@ export default function SendEmailModal({ isOpen, onClose, onSend, isSending }) {
   const [subject, setSubject] = useState('Test Email');
   const [error, setError] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
+  const dialogRef = useRef(null);
 
   // Load recipients from localStorage on mount
   useEffect(() => {
@@ -88,31 +89,48 @@ export default function SendEmailModal({ isOpen, onClose, onSend, isSending }) {
   /** Reset state and close */
   const handleClose = useCallback(() => {
     setEmailInput('');
-    setSubject('Test Email');
     setError('');
     onClose();
   }, [onClose]);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    if (isOpen && !dialog.open) {
+      dialog.showModal();
+    } else if (!isOpen && dialog.open) {
+      dialog.close();
+    }
+  }, [isOpen]);
+
+  const handleBackdropClick = useCallback(
+    (e) => {
+      if (e.target === dialogRef.current) {
+        handleClose();
+      }
+    },
+    [handleClose],
+  );
 
   const inputClass =
     'flex-1 px-3.5 py-2.5 bg-surface-secondary border border-border-primary rounded-md text-text-primary text-sm outline-none transition-colors duration-150 focus:border-accent-primary placeholder:text-text-secondary';
 
   return (
-    <div
-      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-1000 animate-fade-in"
-      onClick={handleClose}
+    <dialog
+      ref={dialogRef}
+      onClose={handleClose}
+      onClick={handleBackdropClick}
+      className="bg-surface-primary border border-border-primary rounded-2xl w-[90%] max-w-120 shadow-[0_24px_64px_rgba(0,0,0,0.3)] p-0 m-auto backdrop:bg-black/35 z-1000 open:animate-slide-up"
     >
-      <div
-        className="bg-surface-primary border border-border-primary rounded-2xl w-[90%] max-w-120 shadow-[0_24px_64px_rgba(0,0,0,0.3)] animate-slide-up"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="flex flex-col w-full h-full">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-border-primary">
           <h2 className="text-lg font-bold text-text-primary m-0">
             Send Test Email
           </h2>
           <button
+            type="button"
             className="bg-transparent border-none text-text-secondary text-base cursor-pointer px-2 py-1 rounded-md transition-all duration-150 hover:bg-surface-secondary hover:text-text-primary flex items-center justify-center font-bold"
             onClick={handleClose}
             aria-label="Close modal"
@@ -156,6 +174,7 @@ export default function SendEmailModal({ isOpen, onClose, onSend, isSending }) {
                 disabled={isSending}
               />
               <button
+                type="button"
                 className="px-4.5 py-2.5 bg-transparent border border-accent-primary/40 rounded-md text-accent-primary text-[13px] font-semibold cursor-pointer transition-all duration-150 whitespace-nowrap hover:bg-accent-primary/10 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={addRecipient}
                 disabled={isSending || !emailInput.trim()}
@@ -176,6 +195,7 @@ export default function SendEmailModal({ isOpen, onClose, onSend, isSending }) {
                 >
                   {email}
                   <button
+                    type="button"
                     className="bg-transparent border-none text-accent-primary cursor-pointer p-0 opacity-70 transition-opacity duration-150 flex items-center justify-center hover:opacity-100"
                     onClick={() => removeRecipient(email)}
                     disabled={isSending}
@@ -192,6 +212,7 @@ export default function SendEmailModal({ isOpen, onClose, onSend, isSending }) {
         {/* Footer */}
         <div className="flex justify-end gap-2.5 px-6 py-4 border-t border-border-primary">
           <button
+            type="button"
             className="px-6 py-2.5 bg-transparent border border-accent-primary/40 rounded-md text-accent-primary text-sm font-semibold cursor-pointer transition-all duration-150 hover:bg-accent-primary/10 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleClose}
             disabled={isSending}
@@ -199,6 +220,7 @@ export default function SendEmailModal({ isOpen, onClose, onSend, isSending }) {
             Cancel
           </button>
           <button
+            type="button"
             className="inline-flex items-center gap-2 px-6 py-2.5 bg-accent-primary border-none rounded-md text-surface-primary text-sm font-semibold cursor-pointer transition-all duration-150 hover:bg-accent-primary/88 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleSend}
             disabled={isSending || recipients.length === 0}
@@ -214,6 +236,6 @@ export default function SendEmailModal({ isOpen, onClose, onSend, isSending }) {
           </button>
         </div>
       </div>
-    </div>
+    </dialog>
   );
 }

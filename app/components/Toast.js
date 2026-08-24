@@ -25,31 +25,31 @@ export default function Toast({
 
   return (
     <div
-      className={`fixed bottom-6 right-6 flex items-center gap-2.5 px-5 py-3.5 rounded-xl text-sm font-medium shadow-[0_8px_32px_rgba(0,0,0,0.2)] z-2000 animate-toast-in max-w-105 ${
-        isSuccess
-          ? 'bg-success-bg border border-success text-success'
-          : 'bg-error-bg border border-error text-error'
+      role="status"
+      className={`fixed bottom-6 right-6 flex items-center gap-3 px-4.5 py-3.5 rounded-xl text-sm font-medium shadow-[0_12px_40px_rgba(0,0,0,0.6)] z-2000 animate-toast-in max-w-105 bg-surface-secondary text-text-primary border ${
+        isSuccess ? 'border-success/40' : 'border-error/40'
       }`}
     >
       {/* Icon */}
       <span
-        className={`flex items-center justify-center w-5.5 h-5.5 rounded-full shrink-0 text-white ${
-          isSuccess ? 'bg-success' : 'bg-error'
+        className={`flex items-center justify-center w-6 h-6 rounded-full shrink-0 ${
+          isSuccess ? 'bg-success/20 text-success' : 'bg-error/20 text-error'
         }`}
       >
         {isSuccess ? (
-          <CheckIcon className="w-3.75 h-3.75" />
+          <CheckIcon className="w-4 h-4" />
         ) : (
-          <XMarkIcon className="w-3.75 h-3.75" />
+          <XMarkIcon className="w-4 h-4" />
         )}
       </span>
 
       {/* Message */}
-      <span className="flex-1">{message}</span>
+      <span className="flex-1 leading-snug">{message}</span>
 
       {/* Dismiss */}
       <button
-        className="bg-transparent border-none text-inherit text-sm cursor-pointer opacity-60 px-1 py-0.5 transition-opacity duration-150 flex items-center justify-center hover:opacity-100"
+        type="button"
+        className="bg-transparent border-none text-text-secondary hover:text-text-primary text-sm cursor-pointer p-1 rounded-md transition-colors duration-150 flex items-center justify-center ml-1"
         onClick={onClose}
         aria-label="Dismiss"
       >
